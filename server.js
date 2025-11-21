@@ -17,6 +17,31 @@ const logs = [];
 app.post('/api/logs', (req, res) => {
     const { level, message, timestamp, data } = req.body;
     
+    // Validate request body
+    if (!req.body || typeof req.body !== 'object') {
+        return res.status(400).json({ 
+            success: false, 
+            message: 'Invalid request body' 
+        });
+    }
+    
+    // Validate message field
+    if (message !== undefined && typeof message !== 'string') {
+        return res.status(400).json({ 
+            success: false, 
+            message: 'Message must be a string' 
+        });
+    }
+    
+    // Validate level field
+    const validLevels = ['info', 'warn', 'error'];
+    if (level && !validLevels.includes(level)) {
+        return res.status(400).json({ 
+            success: false, 
+            message: 'Invalid log level. Must be info, warn, or error' 
+        });
+    }
+    
     const logEntry = {
         level: level || 'info',
         message: message || '',

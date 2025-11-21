@@ -7,6 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
     checkServerHealth();
     refreshLogs();
     updateLogCount();
+    
+    // Enable Enter key for sending custom log
+    const messageInput = document.getElementById('logMessage');
+    if (messageInput) {
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendCustomLog();
+            }
+        });
+    }
 });
 
 // Logger class to send logs to backend
@@ -207,15 +217,3 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
-
-// Enable Enter key for sending custom log
-document.addEventListener('DOMContentLoaded', () => {
-    const messageInput = document.getElementById('logMessage');
-    if (messageInput) {
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendCustomLog();
-            }
-        });
-    }
-});
