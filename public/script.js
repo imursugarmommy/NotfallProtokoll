@@ -92,7 +92,7 @@ async function readLogsFromFile() {
 
     const logsFromFile = JSON.parse(result).logs;
     logs.push(...logsFromFile);
-    updateLogCount();
+    updateCounts();
 
     displayLogs(logsFromFile);
   } catch (error) {
@@ -154,6 +154,38 @@ async function checkServerHealth() {
 async function updateLogCount() {
   const countElement = document.getElementById("logCount");
   countElement.textContent = `${logs.length}`;
+}
+
+// Update total, info and warning counts in the UI
+function updateCounts() {
+  const total = logs.length;
+  const infoCount = logs.reduce((acc, l) => {
+    try {
+      return acc + ((l.level || "info").toString().toLowerCase() === "info");
+    } catch (e) {
+      return acc;
+    }
+  }, 0);
+
+  const warningCount = logs.reduce((acc, l) => {
+    try {
+      return acc + ((l.level || "").toString().toLowerCase() === "warning");
+    } catch (e) {
+      return acc;
+    }
+  }, 0);
+
+  const totalEl = document.getElementById("logCount");
+  const infoEl = document.getElementById("infoCount");
+  const warningEl = document.getElementById("warningCount");
+  const presentEl = document.getElementById("presentCount");
+
+  if (totalEl) totalEl.textContent = `${total}`;
+  if (infoEl) infoEl.textContent = `${infoCount}`;
+  if (warningEl) warningEl.textContent = `${warningCount}`;
+  // Leute im Gebaeude = info - warning (don't go below 0)
+  const present = Math.max(0, infoCount - warningCount);
+  if (presentEl) presentEl.textContent = `${present}`;
 }
 
 // Display local error (when backend is unavailable)
