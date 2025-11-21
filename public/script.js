@@ -1,12 +1,11 @@
 // Configuration
 const API_URL = window.location.origin;
-let logsSentCount = 0;
+const logs = [];
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
   checkServerHealth();
   readLogsFromFile();
-  updateLogCount();
 
   // Enable Enter key for sending custom log
   const messageInput = document.getElementById("logMessage");
@@ -47,8 +46,6 @@ class Logger {
       }
 
       const result = await response.json();
-      logsSentCount++;
-      updateLogCount();
 
       return result;
     } catch (error) {
@@ -80,7 +77,6 @@ async function testInfoLog() {
     source: "test button",
     action: "info log test",
   });
-  await refreshLogs();
 }
 
 async function testWarnLog() {
@@ -89,7 +85,6 @@ async function testWarnLog() {
     action: "warning log test",
     severity: "medium",
   });
-  await refreshLogs();
 }
 
 async function testErrorLog() {
@@ -98,7 +93,6 @@ async function testErrorLog() {
     action: "error log test",
     severity: "high",
   });
-  await refreshLogs();
 }
 
 // Send custom log from form
@@ -115,24 +109,6 @@ async function sendCustomLog() {
 
   // Clear the input
   document.getElementById("logMessage").value = "";
-
-  await refreshLogs();
-}
-
-async function refreshLogs() {
-  try {
-    const response = await fetch(`${API_URL}/api/logs`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    displayLogs(result.logs);
-  } catch (error) {
-    console.error("Failed to fetch logs:", error);
-    displayLocalError(`Failed to fetch logs: ${error.message}`);
-  }
 }
 
 async function readLogsFromFile() {
@@ -147,12 +123,10 @@ async function readLogsFromFile() {
 
     // for each log create a logger.info event so they dont get lost on reload
     const logsFromFile = JSON.parse(result).logs;
-    console.log(logsFromFile);
-    for (const log of logsFromFile) {
-      await logger.info(log.message, log.data);
-    }
+    logs.push(...logsFromFile);
+    updateLogCount();
 
-    displayLogs(JSON.parse(result).logs);
+    displayLogs(logsFromFile);
   } catch (error) {
     console.error("Failed to read logs from file:", error);
     displayLocalError(`Failed to read logs from file: ${error.message}`);
@@ -169,8 +143,10 @@ function displayLogs(logs) {
     return;
   }
 
-  // Display most recent logs first (reverse order)
-  const sortedLogs = [...logs].reverse();
+  // sort logs by timestamp descending
+  const sortedLogs = [...logs].sort((a, b) => {
+    return new Date(b.timestamp) - new Date(a.timestamp);
+  });
 
   container.innerHTML = sortedLogs
     .map((log) => {
@@ -218,9 +194,9 @@ async function checkServerHealth() {
   }
 }
 
-// Update log count display
-function updateLogCount() {
-  document.getElementById("logCount").textContent = logsSentCount;
+async function updateLogCount() {
+  const countElement = document.getElementById("logCount");
+  countElement.textContent = `${logs.length}`;
 }
 
 // Display local error (when backend is unavailable)
