@@ -109,9 +109,16 @@ body {
   padding: 0.75rem;
   margin-bottom: 0.75rem;
   border-radius: 6px;
-  border-left: 4px solid;
   background: var(--light-bg);
   animation: slideIn 0.3s ease;
+}
+
+.log-entry.info {
+  border-left: 4px solid var(--info-color);
+}
+
+.log-entry.warning {
+  border-left: 4px solid var(--warning-color);
 }
 
 .log-entry p {
@@ -131,10 +138,6 @@ body {
     opacity: 1;
     transform: translateX(0);
   }
-}
-
-.log-entry.info {
-  border-left-color: var(--info-color);
 }
 
 .log-level {

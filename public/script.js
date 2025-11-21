@@ -58,33 +58,26 @@ class Logger {
   info(message, data = null) {
     return this.sendLog("info", message, data);
   }
+
+  warning(message, data = null) {
+    return this.sendLog("warning", message, data);
+  }
 }
 
-// Create global logger instance
 const logger = new Logger(API_URL);
 
-// Test functions for buttons
-async function testInfoLog() {
-  await logger.info("This is an informational message", {
-    source: "test button",
-    action: "info log test",
+async function leave() {
+  await logger.warning("One Person left", {
+    source: "button",
+    level: "info",
   });
 }
 
-// Send custom log from form
-async function sendCustomLog() {
-  const level = document.getElementById("logLevel").value;
-  const message = document.getElementById("logMessage").value.trim();
-
-  if (!message) {
-    displayLocalError("Please enter a message");
-    return;
-  }
-
-  await logger.sendLog(level, message, { source: "custom log form" });
-
-  // Clear the input
-  document.getElementById("logMessage").value = "";
+async function come() {
+  await logger.info("One Person came", {
+    source: "button",
+    level: "warning",
+  });
 }
 
 async function readLogsFromFile() {
@@ -97,7 +90,6 @@ async function readLogsFromFile() {
 
     const result = await response.text();
 
-    // for each log create a logger.info event so they dont get lost on reload
     const logsFromFile = JSON.parse(result).logs;
     logs.push(...logsFromFile);
     updateLogCount();
@@ -129,7 +121,7 @@ function displayLogs(logs) {
       const timestamp = new Date(log.timestamp).toLocaleString();
 
       return `
-            <div class="log-entry info">
+            <div class="log-entry ${log.level}">
               <p class="log-timestamp">${timestamp}</p>
               <p class="log-message">${escapeHtml(log.message)}</p>
             </div>
