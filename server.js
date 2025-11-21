@@ -22,11 +22,18 @@ writeLogToFile = (logEntry) => {
     logDir,
     `protokoll_${new Date().toISOString().slice(0, 10)}.log`
   );
-  const formattedLog = `[${logEntry.timestamp}] ${logEntry.message} ${
-    logEntry.data ? JSON.stringify(logEntry.data) : ""
-  }\n`;
 
-  fs.appendFile(logFilePath, formattedLog, (err) => {
+  // Write each log as a JSON-line (one JSON object per line). This makes
+  // parsing on read reliable and avoids JSON.parse errors when the client
+  // expects JSON.
+  const out = {
+    level: logEntry.level || "info",
+    timestamp: logEntry.timestamp,
+    message: logEntry.message,
+    data: logEntry.data || null,
+  };
+
+  fs.appendFile(logFilePath, JSON.stringify(out) + "\n", (err) => {
     if (err) {
       console.error("Failed to write log to file:", err);
     }
@@ -35,7 +42,7 @@ writeLogToFile = (logEntry) => {
 
 // Endpoint to receive logs from frontend
 app.post("/api/logs", (req, res) => {
-  const { message, timestamp, data } = req.body;
+  const { level, message, timestamp, data } = req.body;
 
   // Validate request body
   if (!req.body || typeof req.body !== "object") {
@@ -54,6 +61,7 @@ app.post("/api/logs", (req, res) => {
   }
 
   const logEntry = {
+    level: level || "info",
     message: message || "",
     timestamp: timestamp || new Date().toISOString(),
     data: data || null,
@@ -71,6 +79,65 @@ app.post("/api/logs", (req, res) => {
     success: true,
     message: "Log received",
     logId: logs.length - 1,
+  });
+});
+
+app.get("/api/logs/file", (req, res) => {
+  const logFilePath = path.join(
+    __dirname,
+    "logs",
+    `protokoll_${new Date().toISOString().slice(0, 10)}.log`
+  );
+
+  if (!fs.existsSync(logFilePath)) {
+    return res.status(404).json({
+      success: false,
+      message: "Log file not found for today",
+    });
+  }
+
+  fs.readFile(logFilePath, "utf8", (err, content) => {
+    if (err) {
+      console.error("Failed to read log file:", err);
+      return res
+        .status(500)
+        .json({ success: false, message: "Failed to read log file" });
+    }
+
+    const lines = content.split(/\r?\n/).filter((l) => l.trim() !== "");
+
+    const parsed = lines.map((line) => {
+      // Try JSON.parse first (we now write JSON-lines). If that fails,
+      // fall back to the legacy bracket format parsing. If neither works,
+      // return the raw line.
+      try {
+        return JSON.parse(line);
+      } catch (e) {
+        const match = line.match(/^\[(.+?)\]\s*(.*?)\s*(\{.*\})?$/);
+        if (match) {
+          const timestamp = match[1];
+          const message = match[2] || "";
+          let data = null;
+          if (match[3]) {
+            try {
+              data = JSON.parse(match[3]);
+            } catch (err) {
+              data = match[3];
+            }
+          }
+          return {
+            level: "info",
+            timestamp,
+            message,
+            data,
+          };
+        }
+
+        return { raw: line };
+      }
+    });
+
+    res.status(200).json({ success: true, count: parsed.length, logs: parsed });
   });
 });
 

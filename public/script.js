@@ -5,7 +5,7 @@ let logsSentCount = 0;
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
   checkServerHealth();
-  refreshLogs();
+  readLogsFromFile();
   updateLogCount();
 
   // Enable Enter key for sending custom log
@@ -132,6 +132,30 @@ async function refreshLogs() {
   } catch (error) {
     console.error("Failed to fetch logs:", error);
     displayLocalError(`Failed to fetch logs: ${error.message}`);
+  }
+}
+
+async function readLogsFromFile() {
+  try {
+    const response = await fetch(`${API_URL}/api/logs/file`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.text();
+
+    // for each log create a logger.info event so they dont get lost on reload
+    const logsFromFile = JSON.parse(result).logs;
+    console.log(logsFromFile);
+    for (const log of logsFromFile) {
+      await logger.info(log.message, log.data);
+    }
+
+    displayLogs(JSON.parse(result).logs);
+  } catch (error) {
+    console.error("Failed to read logs from file:", error);
+    displayLocalError(`Failed to read logs from file: ${error.message}`);
   }
 }
 
