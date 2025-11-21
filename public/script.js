@@ -69,14 +69,14 @@ const logger = new Logger(API_URL);
 async function leave() {
   await logger.warning("One Person left", {
     source: "button",
-    level: "info",
+    level: "warning",
   });
 }
 
 async function come() {
   await logger.info("One Person came", {
     source: "button",
-    level: "warning",
+    level: "info",
   });
 }
 
