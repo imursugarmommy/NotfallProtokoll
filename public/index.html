@@ -1,85 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
     <title>NotfallProtokoll - Emergency Protocol</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="styles.css" />
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1>NotfallProtokoll</h1>
-            <p class="subtitle">Emergency Protocol Logging System</p>
-        </header>
+      <header>
+        <h1>NotfallProtokoll</h1>
+        <p class="subtitle">Emergency Protocol Logging System</p>
+      </header>
 
-        <main>
-            <section class="log-controls">
-                <h2>Test Log Functions</h2>
-                <div class="button-group">
-                    <button class="btn btn-info" onclick="testInfoLog()">
-                        Info Log
-                    </button>
-                    <button class="btn btn-warn" onclick="testWarnLog()">
-                        Warning Log
-                    </button>
-                    <button class="btn btn-error" onclick="testErrorLog()">
-                        Error Log
-                    </button>
-                </div>
-            </section>
+      <main>
+        <section class="log-controls">
+          <h2>Test Log Functions</h2>
+          <div class="button-group">
+            <button
+              class="btn btn-info"
+              onclick="testInfoLog()">
+              Info Log
+            </button>
+            <button
+              class="btn btn-warn"
+              onclick="testWarnLog()">
+              Warning Log
+            </button>
+            <button
+              class="btn btn-error"
+              onclick="testErrorLog()">
+              Error Log
+            </button>
+          </div>
+        </section>
 
-            <section class="custom-log">
-                <h2>Send Custom Log</h2>
-                <div class="form-group">
-                    <label for="logLevel">Log Level:</label>
-                    <select id="logLevel" class="input">
-                        <option value="info">Info</option>
-                        <option value="warn">Warning</option>
-                        <option value="error">Error</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="logMessage">Message:</label>
-                    <input type="text" id="logMessage" class="input" placeholder="Enter log message...">
-                </div>
-                <button class="btn btn-primary" onclick="sendCustomLog()">
-                    Send Log
-                </button>
-            </section>
+        <section class="custom-log">
+          <h2>Send Custom Log</h2>
+          <div class="form-group">
+            <label for="logLevel">Log Level:</label>
+            <select
+              id="logLevel"
+              class="input">
+              <option value="info">Info</option>
+              <option value="warn">Warning</option>
+              <option value="error">Error</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="logMessage">Message:</label>
+            <input
+              type="text"
+              id="logMessage"
+              class="input"
+              placeholder="Enter log message..." />
+          </div>
+          <button
+            class="btn btn-primary"
+            onclick="sendCustomLog()">
+            Send Log
+          </button>
+        </section>
 
-            <section class="log-display">
-                <div class="section-header">
-                    <h2>Recent Logs</h2>
-                    <button class="btn btn-secondary btn-sm" onclick="refreshLogs()">
-                        Refresh
-                    </button>
-                </div>
-                <div id="logContainer" class="log-container">
-                    <p class="placeholder">No logs yet. Click a button above to send a test log.</p>
-                </div>
-            </section>
+        <section class="log-display">
+          <div class="section-header">
+            <h2>Recent Logs</h2>
+            <button
+              class="btn btn-secondary btn-sm"
+              onclick="refreshLogs()">
+              Refresh
+            </button>
+          </div>
+          <div
+            id="logContainer"
+            class="log-container">
+            <p class="placeholder">
+              No logs yet. Click a button above to send a test log.
+            </p>
+          </div>
+        </section>
 
-            <section class="status">
-                <h2>System Status</h2>
-                <div id="statusContainer" class="status-container">
-                    <div class="status-item">
-                        <span class="status-label">Server:</span>
-                        <span id="serverStatus" class="status-value">Checking...</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">Logs Sent:</span>
-                        <span id="logCount" class="status-value">0</span>
-                    </div>
-                </div>
-            </section>
-        </main>
+        <section class="status">
+          <h2>System Status</h2>
+          <div
+            id="statusContainer"
+            class="status-container">
+            <div class="status-item">
+              <span class="status-label">Server:</span>
+              <span
+                id="serverStatus"
+                class="status-value"
+                >Checking...</span
+              >
+            </div>
+            <div class="status-item">
+              <span class="status-label">Logs Sent:</span>
+              <span
+                id="logCount"
+                class="status-value"
+                >0</span
+              >
+            </div>
+          </div>
+        </section>
+      </main>
 
-        <footer>
-            <p>&copy; 2025 NotfallProtokoll. All rights reserved.</p>
-        </footer>
+      <footer>
+        <p>&copy; 2025 NotfallProtokoll. All rights reserved.</p>
+      </footer>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

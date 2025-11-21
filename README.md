@@ -14,12 +14,14 @@ Emergency Protocol Logging System with HTML/CSS/JavaScript frontend and Node.js 
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/imursugarmommy/NotfallProtokoll.git
 cd NotfallProtokoll
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
@@ -27,11 +29,13 @@ npm install
 ## Usage
 
 1. Start the server:
+
 ```bash
 npm start
 ```
 
 2. Open your browser and navigate to:
+
 ```
 http://localhost:3000
 ```
@@ -45,9 +49,11 @@ http://localhost:3000
 ## API Endpoints
 
 ### POST /api/logs
+
 Send a log entry to the backend.
 
 **Request Body:**
+
 ```json
 {
   "level": "info|warn|error",
@@ -58,9 +64,11 @@ Send a log entry to the backend.
 ```
 
 ### GET /api/logs
+
 Retrieve all captured logs.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -70,6 +78,7 @@ Retrieve all captured logs.
 ```
 
 ### GET /api/health
+
 Check server health status.
 
 ## Project Structure
