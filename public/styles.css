@@ -24,74 +24,24 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
-  padding: 2rem 1rem;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  height: 100vh;
   background: var(--card-bg);
-  border-radius: 12px;
-  box-shadow: var(--shadow-lg);
   overflow: hidden;
-}
-
-/* Header */
-header {
-  background: var(--dark-bg);
-  color: white;
-  padding: 2rem;
-  text-align: center;
-}
-
-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.subtitle {
-  font-size: 1.125rem;
-  color: #9ca3af;
-}
-
-/* Main Content */
-main {
-  padding: 2rem;
-}
-
-section {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: var(--light-bg);
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-}
-
-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--text-primary);
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.section-header h2 {
-  margin-bottom: 0;
 }
 
 /* Buttons */
 .button-group {
+  height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
 }
@@ -116,14 +66,7 @@ section h2 {
   transform: translateY(0);
 }
 
-.btn-primary {
-  background: var(--primary-color);
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #1d4ed8;
-}
+/* .btn-primary removed (not used in HTML) */
 
 .btn-info {
   background: var(--info-color);
@@ -143,73 +86,40 @@ section h2 {
   background: #c2410c;
 }
 
-.btn-error {
-  background: var(--danger-color);
-  color: white;
+.controlling-main {
+  padding: 1rem;
+  height: 100vh;
 }
-
-.btn-error:hover {
-  background: #b91c1c;
-}
-
-.btn-secondary {
-  background: var(--text-secondary);
-  color: white;
-}
-
-.btn-secondary:hover {
-  background: #4b5563;
-}
-
-.btn-sm {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-}
-
-/* Forms */
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.input {
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  background: white;
-  transition: border-color 0.3s ease;
-}
-
-.input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
 /* Log Display */
+.log-display {
+  height: 95%;
+}
+
 .log-container {
-  max-height: 400px;
+  height: 100%;
+
   overflow-y: auto;
   background: white;
   border-radius: 6px;
-  padding: 1rem;
 }
 
 .log-entry {
+  display: flex;
+  text-align: center;
   padding: 0.75rem;
   margin-bottom: 0.75rem;
   border-radius: 6px;
   border-left: 4px solid;
   background: var(--light-bg);
   animation: slideIn 0.3s ease;
+}
+
+.log-entry p {
+  display: inline-block;
+  text-align: center;
+  margin: 0 0.5rem;
+  vertical-align: middle;
+  font-size: 0.95rem;
 }
 
 @keyframes slideIn {
@@ -225,21 +135,6 @@ section h2 {
 
 .log-entry.info {
   border-left-color: var(--info-color);
-}
-
-.log-entry.warn {
-  border-left-color: var(--warning-color);
-}
-
-.log-entry.error {
-  border-left-color: var(--danger-color);
-}
-
-.log-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
 }
 
 .log-level {
@@ -306,16 +201,7 @@ section h2 {
   background: white;
   border-radius: 4px;
   font-weight: 600;
-  color: var(--primary-color);
-}
-
-/* Footer */
-footer {
-  background: var(--dark-bg);
-  color: #9ca3af;
-  padding: 1.5rem;
-  text-align: center;
-  font-size: 0.875rem;
+  color: var(--text-primary);
 }
 
 /* Responsive Design */
@@ -324,9 +210,7 @@ footer {
     padding: 1rem 0.5rem;
   }
 
-  header h1 {
-    font-size: 2rem;
-  }
+  /* header h1 removed (not present in HTML) */
 
   main {
     padding: 1rem;
@@ -344,13 +228,15 @@ footer {
     width: 100%;
   }
 
-  .section-header {
+  /* .section-header and .section-header .btn-sm removed (not used) */
+
+  .log-entry {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    text-align: left;
   }
 
-  .section-header .btn-sm {
-    width: 100%;
+  .controlling-main {
+    padding: 0.5rem;
   }
 }

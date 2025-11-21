@@ -58,14 +58,6 @@ class Logger {
   info(message, data = null) {
     return this.sendLog("info", message, data);
   }
-
-  warn(message, data = null) {
-    return this.sendLog("warn", message, data);
-  }
-
-  error(message, data = null) {
-    return this.sendLog("error", message, data);
-  }
 }
 
 // Create global logger instance
@@ -76,22 +68,6 @@ async function testInfoLog() {
   await logger.info("This is an informational message", {
     source: "test button",
     action: "info log test",
-  });
-}
-
-async function testWarnLog() {
-  await logger.warn("This is a warning message", {
-    source: "test button",
-    action: "warning log test",
-    severity: "medium",
-  });
-}
-
-async function testErrorLog() {
-  await logger.error("This is an error message", {
-    source: "test button",
-    action: "error log test",
-    severity: "high",
   });
 }
 
@@ -151,22 +127,11 @@ function displayLogs(logs) {
   container.innerHTML = sortedLogs
     .map((log) => {
       const timestamp = new Date(log.timestamp).toLocaleString();
-      const dataString = log.data ? JSON.stringify(log.data, null, 2) : "";
 
       return `
-            <div class="log-entry ${log.level}">
-                <div class="log-header">
-                    <span class="log-level ${log.level}">${log.level}</span>
-                    <span class="log-timestamp">${timestamp}</span>
-                </div>
-                <div class="log-message">${escapeHtml(log.message)}</div>
-                ${
-                  dataString
-                    ? `<pre style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);">${escapeHtml(
-                        dataString
-                      )}</pre>`
-                    : ""
-                }
+            <div class="log-entry info">
+              <p class="log-timestamp">${timestamp}</p>
+              <p class="log-message">${escapeHtml(log.message)}</p>
             </div>
         `;
     })
@@ -204,10 +169,8 @@ function displayLocalError(message) {
   const container = document.getElementById("logContainer");
   const errorHtml = `
         <div class="log-entry error">
-            <div class="log-header">
-                <span class="log-level error">Error</span>
-                <span class="log-timestamp">${new Date().toLocaleString()}</span>
-            </div>
+            <span class="log-level error">Error</span>
+            <span class="log-timestamp">${new Date().toLocaleString()}</span>
             <div class="log-message">${escapeHtml(message)}</div>
         </div>
     `;
