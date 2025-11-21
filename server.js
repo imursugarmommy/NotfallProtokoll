@@ -141,16 +141,6 @@ app.get("/api/logs/file", (req, res) => {
   });
 });
 
-// Endpoint to retrieve all logs
-app.get("/api/logs", (req, res) => {
-  res.status(200).json({
-    success: true,
-    count: logs.length,
-    logs: logs,
-  });
-});
-
-// Health check endpoint
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,
