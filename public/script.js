@@ -2,6 +2,21 @@
 const API_URL = window.location.origin;
 const logs = [];
 
+// Function to fetch and display the client's IP address using ipify API
+async function fetchServerIP() {
+  try {
+    const res = await fetch("https://api.ipify.org?format=json");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const { ip } = await res.json();
+    return ip;
+  } catch (err) {
+    console.error("Failed to fetch client IP:", err);
+    if (typeof displayLocalError === "function") {
+      displayLocalError(`Failed to fetch client IP: ${err.message}`);
+    }
+  }
+}
+
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
   checkServerHealth();
@@ -25,12 +40,15 @@ class Logger {
   }
 
   async sendLog(level, message, data = null) {
+    const clientIP = await fetchServerIP();
+
     try {
       const logEntry = {
         level: level,
         message: message,
         timestamp: new Date().toISOString(),
         data: data,
+        ip: clientIP,
       };
 
       const response = await fetch(`${this.apiUrl}/api/logs`, {

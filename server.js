@@ -30,6 +30,7 @@ writeLogToFile = (logEntry) => {
     level: logEntry.level || "info",
     timestamp: logEntry.timestamp,
     message: logEntry.message,
+    ip: logEntry.ip || null,
     data: logEntry.data || null,
   };
 
@@ -42,7 +43,7 @@ writeLogToFile = (logEntry) => {
 
 // Endpoint to receive logs from frontend
 app.post("/api/logs", (req, res) => {
-  const { level, message, timestamp, data } = req.body;
+  const { level, message, timestamp, data, ip } = req.body;
 
   // Validate request body
   if (!req.body || typeof req.body !== "object") {
@@ -64,13 +65,13 @@ app.post("/api/logs", (req, res) => {
     level: level || "info",
     message: message || "",
     timestamp: timestamp || new Date().toISOString(),
+    ip: ip || "unknown",
     data: data || null,
   };
 
   logs.push(logEntry);
 
-  // Log to console
-  const consoleMessage = `[${logEntry.timestamp}] ${logEntry.message}`;
+  const consoleMessage = `[${logEntry.timestamp}] [${logEntry.ip}] ${logEntry.message}`;
   console.info(consoleMessage);
 
   writeLogToFile(logEntry);
