@@ -84,11 +84,16 @@ class Logger {
 
 const logger = new Logger(API_URL);
 
+const presentEl = document.getElementById("presentCount");
+
 async function leave() {
   await logger.warning("One Person left", {
     source: "button",
     level: "warning",
   });
+
+  const presentCount = Number(presentEl.innerHTML);
+  presentEl.innerHTML = presentCount - 1;
 }
 
 async function come() {
@@ -96,6 +101,9 @@ async function come() {
     source: "button",
     level: "info",
   });
+
+  const presentCount = Number(presentEl.innerHTML);
+  presentEl.innerHTML = presentCount + 1;
 }
 
 async function readLogsFromFile() {
@@ -202,7 +210,6 @@ function updateCounts() {
   const totalEl = document.getElementById("logCount");
   const infoEl = document.getElementById("infoCount");
   const warningEl = document.getElementById("warningCount");
-  const presentEl = document.getElementById("presentCount");
 
   if (totalEl) totalEl.textContent = `${total}`;
   if (infoEl) infoEl.textContent = `${infoCount}`;
