@@ -137,11 +137,17 @@ function displayLogs(logs) {
   container.innerHTML = sortedLogs
     .map((log) => {
       const timestamp = new Date(log.timestamp).toLocaleString();
+      const ip = log.ip || "unknown";
 
       return `
             <div class="log-entry ${log.level}">
               <p class="log-timestamp">${timestamp}</p>
-              <p class="log-message">${escapeHtml(log.message)}</p>
+              <p class="log-message ${log.level}">${escapeHtml(
+        log.message
+      )} <span style="font-style: italic; color: var(--text-secondary)">from</span> <span class="log-ip">${escapeHtml(
+        ip
+      )}</span></p>
+              
             </div>
         `;
     })

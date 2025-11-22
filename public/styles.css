@@ -1,4 +1,6 @@
 /* Reset and Base Styles */
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -107,28 +109,17 @@ body {
 
 .log-container {
   height: 100%;
-
+  font-family: "Roboto Mono", monospace;
   overflow-y: auto;
-  background: white;
-  border-radius: 6px;
+  background: var(--light-bg);
 }
 
 .log-entry {
   display: flex;
   text-align: center;
   padding: 0.75rem;
-  margin-bottom: 0.75rem;
   border-radius: 6px;
-  background: var(--light-bg);
   animation: slideIn 0.3s ease;
-}
-
-.log-entry.info {
-  border-left: 4px solid var(--info-color);
-}
-
-.log-entry.warning {
-  border-left: 4px solid var(--warning-color);
 }
 
 .log-entry p {
@@ -182,6 +173,18 @@ body {
   font-size: 0.95rem;
   color: var(--text-primary);
   word-wrap: break-word;
+}
+
+.log-message.info {
+  color: var(--info-color);
+}
+
+.log-message.warning {
+  color: var(--warning-color);
+}
+
+.log-ip {
+  color: var(--primary-color);
 }
 
 .placeholder {
