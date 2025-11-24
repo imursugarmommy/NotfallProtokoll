@@ -166,7 +166,8 @@ body {
 
 .log-timestamp {
   color: var(--text-secondary);
-  font-size: 0.75rem;
+  font-size: 0.95rem;
+  margin-inline: 0.5rem;
 }
 
 .log-message {
