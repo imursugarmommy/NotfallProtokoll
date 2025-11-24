@@ -111,12 +111,27 @@ async function readLogsFromFile() {
     const response = await fetch(`${API_URL}/api/logs/file`);
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      let errMsg = `HTTP error! status: ${response.status}`;
+      try {
+        const errBody = await response.json();
+        if (errBody && errBody.message) errMsg = errBody.message;
+      } catch (e) {
+        // ignore JSON parse errors and fall back to status
+      }
+
+      if (response.status === 404) {
+        // No log file for today — show the normal "no logs" placeholder.
+        displayLogs([]);
+        updateCounts();
+        return;
+      }
+
+      throw new Error(errMsg);
     }
 
-    const result = await response.text();
+    const result = await response.json();
 
-    const logsFromFile = JSON.parse(result).logs;
+    const logsFromFile = result.logs;
     logs.push(...logsFromFile);
     updateCounts();
 
